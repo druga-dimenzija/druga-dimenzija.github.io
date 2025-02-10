@@ -1,981 +1,145 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Druga Dimenzija</title>
-    <link rel="icon" href="./images/logo_picture_tab.png" type="image/png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <title>Druga dimenzija</title>
+	<link rel="icon" href="./images/logo_picture_tab.png" type="image/png">
     <style>
-        * {
+        body {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', sans-serif;
-        }
-
-        :root {
-            --primary: #1a1a1a;
-            --secondary: #2d2d2d;
-            --accent: #9D00FF;
-            --text: #ffffff;
-            --card-bg: #2d2d2d;
-            --hover: #ff6b6b;
-        }
-
-        body {
-            background: var(--primary);
-            color: var(--text);
             min-height: 100vh;
-            line-height: 1.6;
-        }
-
-        header {
-            background: var(--secondary);
-            padding: 0.5rem 0;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 0rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: #121212;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
         }
 
         .logo {
-            font-size: 2.5rem;
-            font-weight: bold;
+            width: 120px;
+            height: auto;
+            margin-bottom: 2rem;
+        }
+
+        .container {
             text-align: center;
-            color: var(--text);
-            margin-bottom: 0;
-        }
-		
-		.logo img {
-                height: 11vh;
-		}
-		
-		.shine {
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 50%;
-            height: 100%;
-            background: linear-gradient(
-                to right,
-                rgba(255, 255, 255, 0) 0%,
-                rgba(255, 255, 255, 0.3) 50%,
-                rgba(255, 255, 255, 0) 100%
-            );
-            animation: shine 3s infinite;
-            pointer-events: none;
+            padding: 2rem;
         }
 
-        @keyframes shine {
-            from {
-                left: -100%;
-            }
-            to {
-                left: 200%;
-            }
-        }
-
-
-        .sublogo {
-			text-align: center;
-            color: var(--accent);
-            font-size: 1.0rem;
-            letter-spacing: 2px;
-			padding-top: 0;
-			margin-top: 0;
-		}
-
-        .nav-container {
-            background: var(--secondary);
-            padding: 1rem 0;
-            margin-top: 0.5rem;
-            border-radius: 10px;
-        }
-
-        .category-nav {
+        <!--.icons-grid {
             display: flex;
+            gap: 4rem;
             justify-content: center;
-            gap: 1rem;
-            flex-wrap: wrap;
+            margin-top: 2rem;
+        }-->
+		.icons-grid {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+			gap: 2rem;
+			justify-content: center;
+			margin-top: 2rem;
+			max-width: 500px;
+		}
+
+        .icon-link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: #fff;
+            transition: transform 0.2s;
         }
 
-        .category-btn {
-            background: transparent;
-            border: 2px solid var(--accent);
-            color: var(--text);
-            padding: 0.8rem 1.5rem;
-            border-radius: 25px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 1rem;
-            font-weight: 500;
-        }
-
-        .category-btn:hover {
-            background: var(--accent);
-            transform: translateY(-2px);
-        }
-
-        .category-btn.active {
-            background: var(--accent);
-            box-shadow: 0 0 15px rgba(255, 77, 77, 0.4);
-        }
-
-        .menu-section {
-            padding: 2rem 0;
-        }
-
-        .category-title {
-            font-size: 2rem;
-            margin: 2rem 0;
-            color: var(--accent);
-            position: relative;
-            padding-left: 1rem;
-        }
-
-        .category-title::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 4px;
-            height: 70%;
-            background: var(--accent);
-            border-radius: 2px;
-        }
-
-        .menu-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 2rem;
-            padding: 1rem 0;
-        }
-
-        .food-card {
-            background: var(--card-bg);
-            border-radius: 15px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .food-card:hover {
+        .icon-link:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
 
-        .food-image {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
-
-        .food-content {
-            padding: 1.5rem;
-        }
-
-        .food-title {
-            font-size: 1.3rem;
-            margin-bottom: 0.5rem;
-            color: var(--text);
-        }
-
-        .food-description {
-            color: #b0b0b0;
-            font-size: 0.9rem;
+        .icon-container {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #2c2c2c 0%, #3a3a3a 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             margin-bottom: 1rem;
-            min-height: 2.7rem;
+            box-shadow: 0 4px 15px rgba(123, 104, 238, 0.2);
+            border: 2px solid #7B68EE;
         }
 
-        .food-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 1rem;
+        .icon {
+            width: 40px;
+            height: 40px;
+            fill: #7B68EE;
         }
 
-        .food-price {
-            font-size: 1.1rem;
-            color: var(--accent);
-            font-weight: bold;
+        .label {
+            font-size: 1rem;
+            color: #bebebe;
+            margin-top: 0.5rem;
         }
-
-        
-		
-		.call-button {
-            padding: 12px 10px;
-            background-color: var(--accent);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-            font-family: Arial, sans-serif;
-            font-weight: bold;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;  /* razmak između ikone i teksta */
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-
-        .call-button:hover {
-            background: var(--hover);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
-
-        .call-button:active {
-            transform: translateY(0);
-        }
-		
-		#popup {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: black;
-            padding: 20px;
-            border: 2px solid #4CAF50;
-            box-shadow: 0 0 10px rgba(0,0,0,0.5);
-            z-index: 1001; /* Dodano: veći z-index da bude iznad overlaya */
-        }
-
-        .overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
-            z-index: 1000; /* Dodano: z-index za overlay */
-        }
-		
-		.instagram-link {
-			align-items: center;
-			transition: transform 0.3s ease;  /* smooth hover efekt */
-		}
-		.instagram-link:hover {
-			transform: scale(1.1);  /* malo poveća sliku na hover */
-		}
-		.instagram-image {
-			width: 35px;  /* ili koja god veličina vam odgovara */
-			height: auto;
-
-			margin-top: -30px; /* jer nam u trenutnom pngu viri "prazan prostor"*/
-			margin-bottom: -30px;
-		}	    
-	
-        .hidden {
-            display: none !important;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 0 1rem;
-            }
-            
-            .menu-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .category-nav {
-                padding: 0.5rem;
-            }
-
-            .category-btn {
-                padding: 0.6rem 1.2rem;
-                font-size: 0.9rem;
-            }
-        }
-
-        .food-card {
-            animation: fadeIn 0.5s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        #map {
-            height: 70vh;
-            width: 70vw;
-            margin: 2rem auto; /* This centers the map horizontally */
-            border-radius: 8px;
-            border: 2px solid var(--accent);
-            display: block; /* Ensures proper margin behavior */
-        }
-
     </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
-	
 </head>
 <body>
-
-	<div id="overlay" class="overlay" onclick="closePopup()"></div>
-    <div id="popup">
-        <h3>Naš broj telefona:</h3>
-        <p><strong>+381 65 255-2390</strong></p>
-        <button onclick="closePopup()">Zatvori</button>
-    </div>
-	
-    <header>
-        <div class="container">
-            <div class="logo">
-				<img src="./images/logo_picture.png" alt="Druga Dimenzija Logo" height = 50px/>
-				<img src="./images/logo_text.png" alt="Druga Dimenzija Text" />
-
-			</div>
-			
-            <div class="sublogo">
-				FAST FOOD & GRILL
-				<a href="https://www.instagram.com/druga_dimenzija_kg/" target="_blank" class="instagram-link">
-					<img src="./images/insta_logo4.png" alt="Instagram" class="instagram-image">
-				</a>
-			</div>
-        </div>
-    </header>
-
+    <img src="./full logo.png" alt="Logo" class="logo">
+    
     <div class="container">
-        <div class="nav-container">
-            <nav class="category-nav">
-                <button class="category-btn active" data-category="all">Sve</button>
-                <button class="category-btn" data-category="burgers">Junica</button>
-                <button class="category-btn" data-category="chicken">Pile</button>
-                <button class="category-btn" data-category="kebab">Svinjče</button>
-				<button class="category-btn" data-category="specijaliteti">...</button>
-				<button class="category-btn" data-category="dorucak">Doručak u lepinji</button>
-				<button class="category-btn" data-category="naKilo">Na kilo</button>
-                <button class="category-btn" data-category="slatkisi">Slatkiši</button>
-                <button class="category-btn" data-category="sides">Prilozi</button>
-				<button class="category-btn" data-category="drinks">Pića</button>
-            </nav>
+        <div class="icons-grid">
+		
+			<a href="./menu_page.html" class="icon-link" target="_blank" rel="noopener noreferrer">
+                <div class="icon-container">
+                    <svg class="icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Restaurant Menu">
+                        <path d="M3 3v18h18V3H3zm16 16H5V5h14v14zM7 7h10v2H7V7zm0 4h10v2H7v-2zm0 4h6v2H7v-2z"/>
+                    </svg>
+                </div>
+                <span class="label">Meni</span>
+            </a>
+			<!--<a href="./menu.html" class="icon-link" target="_blank" rel="noopener noreferrer">
+                <div class="icon-container">
+                    <svg class="icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Menu">
+                        <rect x="4" y="6" width="16" height="2"/>
+                        <rect x="4" y="11" width="16" height="2"/>
+                        <rect x="4" y="16" width="16" height="2"/>
+                    </svg>
+                </div>
+                <span class="label">Meni</span>
+            </a> -->
+            <a href="https://instagram.com/druga_dimenzija_kg" class="icon-link" target="_blank">
+                <div class="icon-container">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                    </svg>
+                </div>
+                <span class="label">Instagram</span>
+            </a>
+
+            <a href="https://www.google.com/maps/place/Druga+dimenzija/@44.0117064,20.9081391,17z/data=!3m1!4b1!4m6!3m5!1s0x4757210010812083:0x8cb4501928b9c680!8m2!3d44.0117064!4d20.910714!16s%2Fg%2F11wh49bp6r?entry=ttu&g_ep=EgoyMDI1MDIwNS4xIKXMDSoJLDEwMjExMjM0SAFQAw%3D%3D" class="icon-link" target="_blank">
+                <div class="icon-container">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M12 0c-4.198 0-8 3.403-8 7.602 0 4.198 3.469 9.21 8 16.398 4.531-7.188 8-12.2 8-16.398 0-4.199-3.801-7.602-8-7.602zm0 11c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3z"/>
+                    </svg>
+                </div>
+                <span class="label">Lokacija</span>
+            </a>
+
+            <!--<a href="#" class="icon-link" target="_blank">
+                <div class="icon-container">
+                    <svg class="icon" viewBox="0 0 24 24">
+                        <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm1 16.057v-3.057h2.994c-.059 1.143-.212 2.24-.456 3.279-.823-.12-1.674-.188-2.538-.222zm1.957 2.162c-.499 1.33-1.159 2.497-1.957 3.456v-3.62c.666.028 1.319.081 1.957.164zm-1.957-7.219v-3.015c.868-.034 1.721-.103 2.548-.224.238 1.027.389 2.111.446 3.239h-2.994zm0-5.014v-3.661c.806.969 1.471 2.15 1.971 3.496-.642.084-1.3.137-1.971.165zm2.703-3.267c1.237.496 2.354 1.228 3.29 2.146-.642.234-1.311.442-2.019.607-.344-.992-.775-1.91-1.271-2.753zm-7.241 13.56c-.244-1.039-.398-2.136-.456-3.279h2.994v3.057c-.865.034-1.714.102-2.538.222zm2.538 1.776v3.62c-.798-.959-1.458-2.126-1.957-3.456.638-.083 1.291-.136 1.957-.164zm-2.994-7.055c.057-1.128.207-2.212.446-3.239.827.121 1.68.19 2.548.224v3.015h-2.994zm1.024-5.179c.5-1.346 1.165-2.527 1.97-3.496v3.661c-.671-.028-1.329-.081-1.97-.165zm-2.005-.35c-.708-.165-1.377-.373-2.018-.607.937-.918 2.053-1.65 3.29-2.146-.496.844-.927 1.762-1.272 2.753zm-.549 1.918c-.264 1.151-.434 2.36-.492 3.611h-3.933c.165-1.658.739-3.197 1.617-4.518.88.361 1.816.67 2.808.907zm.009 9.262c-.988.236-1.92.542-2.797.9-.89-1.328-1.471-2.879-1.637-4.551h3.934c.058 1.265.231 2.488.5 3.651zm.553 1.917c.342.976.768 1.881 1.257 2.712-1.223-.49-2.326-1.211-3.256-2.115.636-.229 1.299-.435 1.999-.597zm9.924 0c.7.163 1.362.367 1.999.597-.931.903-2.034 1.625-3.257 2.116.489-.832.915-1.737 1.258-2.713zm.553-1.917c.27-1.163.442-2.386.501-3.651h3.934c-.167 1.672-.748 3.223-1.638 4.551-.877-.358-1.81-.664-2.797-.9zm.501-5.651c-.058-1.251-.229-2.46-.492-3.611.992-.237 1.929-.546 2.809-.907.877 1.321 1.451 2.86 1.616 4.518h-3.933z"/>
+                    </svg>
+                </div>
+                <span class="label">Meni</span>
+            </a>-->
+			<a href="https://g.page/r/CYDGuSgZULSMEAI/review" class="icon-link" target="_blank" rel="noopener noreferrer">
+                <div class="icon-container">
+                    <svg class="icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-label="Rate Us">
+                        <polygon points="12,2 15,8 22,9 17,14 18,21 12,18 6,21 7,14 2,9 9,8"/>
+                    </svg>
+                </div>
+                <span class="label">Ocenite nas!</span>
+            </a>
         </div>
-
-        <section class="menu-section">
-            <div id="burgers" class="menu-category">
-                <h2 class="category-title">Junica</h2>
-                <div class="menu-grid">
-					
-					<div class="food-card" data-category="burgers">
-						<div class="shine"></div>
-                        <img src="./images/velika_pljeskavica.jpg" alt="Lil pljeka" class="food-image">
-                        <div class="food-content">
-                            <h3 class="food-title">Pljeka, da gricneš</h3>
-                            <p class="food-description">100% kravica, jedan "laganiji" obrok.</p>
-                            <div class="food-footer">
-                                <div>
-									<span class="food-price">100g: 230 RSD</span> <br>
-									<span class="food-price">150g: 300 RSD</span> <br>
-									<span class="food-price">200g: 400 RSD</span>
-                                </div>
-                                <button class="call-button" onclick="handleClick()">Pozovite odmah</button>
-                            </div>
-                        </div>
-                    </div>
-				
-                    <div class="food-card" data-category="burgers">
-						<div class="shine"></div>
-                        <img src="./images/pljeskavica_sa_kajmakom.jpg" alt="Pljeskavica kajmak" class="food-image">
-                        <div class="food-content">
-                            <h3 class="food-title">Klasična pljeka, al' s kajmakom</h3>
-                            <p class="food-description">100% pljeka, 100% kajmak, 200% uživancija.</p>
-                            <div class="food-footer">
-								<div>
-									<span class="food-price">100g: 330 RSD</span> <br>
-									<span class="food-price">150g: 400 RSD</span> <br>
-									<span class="food-price">200g: 500 RSD</span>
-                                </div>
-								<button class="call-button" onclick="handleClick()">Pozovite odmah</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    
-					
-					<div class="food-card" data-category="burgers">
-						<div class="shine"></div>
-                        <img src="./images/gurmanska.jpg" alt="Za gurmane, gurmanska" class="food-image">
-                        <div class="food-content">
-                            <h3 class="food-title">Za gurmane, gurmanska</h3>
-                            <p class="food-description">Za naše gurmane malo ljuće: 100% june(ili ti kravica), slanina, kačkavalj i ljutooo. <br>Što se kaže: slaninica i ljuta paprika, a na uvce stara 'armonika. Da mi svira, da mi srce dira... </p>
-                            <div class="food-footer">
-                                <span class="food-price">250g: 500 RSD</span>
-                                <button class="call-button" onclick="handleClick()">Pozovite odmah</button>
-                            </div>
-                        </div>
-                    </div>
-					
-					<div class="food-card" data-category="burgers">
-						<div class="shine"></div>
-                        <img src="./images/cevapi.jpg" alt="cevapi" class="food-image">
-                        <div class="food-content">
-                            <h3 class="food-title">Ćevapčići</h3>
-                            <p class="food-description">100% moja kravica, samlevena u 100% tvoje ćevapčiće.</p>
-                            <div class="food-footer">
-                                <div>
-									<span class="food-price">5 kom: 230 RSD</span> <br>
-									<span class="food-price">10 kom: 400 RSD</span>
-                                </div>
-                                <button class="call-button" onclick="handleClick()">Pozovite odmah</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="food-card" data-category="burgers">
-						<div class="shine"></div>
-                        <img src="./images/2d pljeskavica.jpg" alt="2D pljeskavica" class="food-image">
-                        <div class="food-content">
-                            <h3 class="food-title">2D pljeskavica</h3>
-                            <p class="food-description">100% junetina, duvan čvarci i kačkavalj. Njam njam!</p>
-                            <div class="food-footer">
-                                <div>
-									<span class="food-price">250g: 550 RSD</span> <br>
-                                </div>
-                                <button class="call-button" onclick="handleClick()">Pozovite odmah</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="food-card" data-category="burgers">
-						<div class="shine"></div>
-                        <img src="./images/logo_card.png" alt="2D burger" class="food-image">
-                        <div class="food-content">
-                            <h3 class="food-title">2D Burger</h3>
-                            <p class="food-description">Idemo, specijalitet! Stotka grama mesa, pa čedar, pa stotka mesa, pa slaninica, pa čedar, kiseli krastavac, zelena salata i naravno, burger sos. (100% juneće)</p>
-                            <div class="food-footer">
-                                <div>
-									<span class="food-price">200g: 600 RSD</span> <br>
-                                </div>
-                                <button class="call-button" onclick="handleClick()">Pozovite odmah</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="kebab" class="menu-category">
-                <h2 class="category-title">Svinjče</h2>
-                             
-				<div class="menu-grid">
-                    <div class="food-card" data-category="kebab">
-						<div class="shine"></div>
-                        <img src="./images/kobasice.jpg" alt="kobasice" class="food-image">
-                        <div class="food-content">
-                            <h3 class="food-title">Roštiljska kobasica</h3>
-                            <p class="food-description">Neviđeno dobra kobaja..</p>
-                            <div class="food-footer">
-                                <span class="food-price">200g: 400 RSD</span>
-                                <button class="call-button" onclick="handleClick()">Pozovite odmah</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="food-card" data-category="kebab">
-						<div class="shine"></div>
-                        <img src="./images/snicla.jpg" alt="snicla" class="food-image">
-                        <div class="food-content">
-                            <h3 class="food-title">Svinjska šnicla</h3>
-                            <p class="food-description">I još jača šnicla, od prasenceta.</p>
-                            <div class="food-footer">
-                                <span class="food-price">200g: 330 RSD</span>
-                                <button class="call-button" onclick="handleClick()">Pozovite odmah</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-			<div id="sides" class="menu-category">
-                <h2 class="category-title">Pile</h2>
-                <div class="menu-grid">
-                   
-					
-					<div class="food-card" data-category="chicken">
-						<div class="shine"></div>
-                        <img src="./images/djordjeva.jpg" alt="djordjeva" class="food-image">
-                        <div class="food-content">
-                            <h3 class="food-title">Đorđeva</h3>
-                            <p class="food-description">Vlasnik Đorđe voli da pravi specijalitete, pa tako nastade i ovo čudo. <br> Pileća karađorđeva na naš način.</p>
-                            <div class="food-footer">
-                                <span class="food-price">300g: 450 RSD</span>
-                                <button class="call-button" onclick="handleClick()">Pozovite odmah</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="food-card" data-category="chicken">
-						<div class="shine"></div>
-                        <img src="./images/logo_card.png" alt="Pileca karadjordjeva" class="food-image">
-                        
-                        <div class="food-content">
-                            <h3 class="food-title">Pileća karađorđeva, klasikica</h3>
-                            <p class="food-description">Klasikica laganica, kao i kod ostalih, samo mnogo jače. <br> He-he.</p>
-                            <div class="food-footer">
-                                <span class="food-price">300g: 350 RSD</span>
-                                <button class="call-button" onclick="handleClick()">Pozovite odmah</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="food-card" data-category="chicken">
-						<div class="shine"></div>
-                        <img src="./images/batak.jpg" alt="batak" class="food-image">
-                        <div class="food-content">
-                            <h3 class="food-title">Pileći batak</h3>
-                            <p class="food-description">Do juče trčkaralo...</p>
-                            <div class="food-footer">
-                                <span class="food-price">320 RSD</span>
-                                <button class="call-button" onclick="handleClick()">Pozovite odmah</button>
-                            </div>
-                        </div>
-                    </div>
-					
-					 <div class="food-card" data-category="chicken">
-						<div class="shine"></div>
-                        <img src="./images/pilence.jpg" alt="pilence" class="food-image">
-                        <div class="food-content">
-                            <h3 class="food-title">Pileći file</h3>
-                            <p class="food-description">Nije iz Kolumbije, al' je belo. Pablo je rekao da valja!</p>
-                            <div class="food-footer">
-                                <div>
-									<span class="food-price">150g: 250 RSD</span> <br>
-									<span class="food-price">200g: 320 RSD</span> 
-                                </div>
-                                <button class="call-button" onclick="handleClick()">Pozovite odmah</button>
-                            </div>
-                        </div>
-                    </div>
-					
-					<div class="food-card" data-category="chicken">
-						<div class="shine"></div>
-                        <img src="./images/piletina_susam.jpg" alt="piletina_susam" class="food-image">
-                        <div class="food-content">
-                            <h3 class="food-title">Piletina sa semenkama</h3>
-                            <p class="food-description">Potreban unos proteina, vlakana i vitamina, sve u jednom obroku. <br> U pitanju su nutritivno najbogatije semenke lana, suncokreta i susama.</p>
-                            <div class="food-footer">
-                                <span class="food-price">200g: 450 RSD</span>
-                                <button class="call-button" onclick="handleClick()">Pozovite odmah</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="food-card" data-category="chicken">
-						<div class="shine"></div>
-                        <img src="./images/logo_card.png" alt="Pohovani pileći file" class="food-image">
-                        <div class="food-content">
-                            <h3 class="food-title">Pohovani pileći file</h3>
-                            <p class="food-description">Pohovano belo. <br>  Pablo više voli čisto, ali ovo je najbolje pohovano koje je ikad probao.</p>
-                            <div class="food-footer">
-                                <span class="food-price">250g: 450 RSD</span>
-                                <button class="call-button" onclick="handleClick()">Pozovite odmah</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="food-card" data-category="chicken">
-						<div class="shine"></div>
-                        <img src="./images/logo_card.png" alt="Chicken nuggets" class="food-image">
-                        <div class="food-content">
-                            <h3 class="food-title">Chicken nuggets</h3>
-                            <p class="food-description">Pohovane "loptice" piletine savršene za umakanje u različite sosove, a od nas dobijate cak 2 ili 3 ili 4??? <br> Perfekcija.</p>
-                            <div class="food-footer">
-                                <span class="food-price">200g: 250 RSD</span>
-                                <button class="call-button" onclick="handleClick()">Pozovite odmah</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    
-                </div>
-            </div>
-			
-			<div id="sides" class="menu-category">
-                <h2 class="category-title">Sendviči i kačkavalji</h2>
-                <div class="menu-grid">
-                    <div class="food-card" data-category="specijaliteti">
-						<div class="shine"></div>
-                        <img src="./images/logo_card.png" alt="sendvic" class="food-image">
-                        <div class="food-content">
-                            <h3 class="food-title">Sendvič</h3>
-                            <p class="food-description">Ako ste za brzu klopu ili ste u žurbi, naši sendviči su uvek tu da Vas stignu. <br> U pitanju je: meso iz ponude ispod, kačkavalj, zelena salata i namaz po izboru.</p>
-                            <div class="food-footer">
-                                <div>
-									<span class="food-price">Šunka: 230 RSD</span> <br>
-									<span class="food-price">Pečenica: 270 RSD</span>
-                                </div>
-                                <button class="call-button" onclick="handleClick()">Pozovite odmah</button>
-                            </div>
-                        </div>
-                    </div>
-					
-					
-					<div class="food-card" data-category="specijaliteti">
-						<div class="shine"></div>
-                        <img src="./images/pohovani_kackavalj.jpg" alt="pohovani_kackavalj" class="food-image">
-                        <div class="food-content">
-                            <h3 class="food-title">Pohovani kačkavalj</h3>
-                            <p class="food-description">Jedino ovo je ostalo od onih silnih krava što ste nam pojeli...</p>
-                            <div class="food-footer">
-                                <span class="food-price">150g: 350 RSD</span>
-                                <button class="call-button" onclick="handleClick()">Pozovite odmah</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-			
-            <div id="sides" class="menu-category">
-                <h2 class="category-title">Doručak u lepinji</h2>
-                <div class="menu-grid">
-                    <div class="food-card" data-category="dorucak">
-						<div class="shine"></div>
-                        <img src="./images/jaja_slanina.jpg" alt="jaja slanina" class="food-image">
-                        <div class="food-content">
-                            <h3 class="food-title">Kajgana sa slaninom</h3>
-                            <p class="food-description">U ovu kajganu idu 3 jaja, za dovoljan unos proteina, a kako ne bi zapelo u grlu tu je slaninica da "podmaže".</p>
-                            <div class="food-footer">
-                                <span class="food-price">320 RSD</span> <br>
-                                <button class="call-button" onclick="handleClick()">Pozovite odmah</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="food-card" data-category="dorucak">
-						<div class="shine"></div>
-                        <img src="./images/jaja_kobasica.jpg" alt="jaja kobasica" class="food-image">
-                        <div class="food-content">
-                            <h3 class="food-title">Kajgana sa kobajom</h3>
-                            <p class="food-description">3 jajca, elegantno, ali sada uz dodatak legendarne kobaje.</p>
-                            <div class="food-footer">
-                                <span class="food-price">320 RSD</span> <br>
-                                <button class="call-button" onclick="handleClick()">Pozovite odmah</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="food-card" data-category="dorucak">
-						<div class="shine"></div>
-                        <img src="./images/2D dorucak.jpg" alt="2D dorucak" class="food-image">
-                        <div class="food-content">
-                            <h3 class="food-title">2D Doručak</h3>
-                            <p class="food-description">Dvodimenzionalna kajgana sa trostrukim jajcetom i trostrukim mescetom.<br>U suštini, 3 jaja, slaninica, kobaja i duvan čvarci.</p>
-                            <div class="food-footer">
-                                <span class="food-price">380 RSD</span> <br>
-                                <button class="call-button" onclick="handleClick()">Pozovite odmah</button>
-                            </div>
-                        </div>
-                    </div>
-					
-                    <div class="food-card" data-category="dorucak">
-						<div class="shine"></div>
-                        <img src="./images/logo_card.png" alt="jaja kackavalj" class="food-image">
-                        <div class="food-content">
-                            <h3 class="food-title">Kajgana sa kačkavaljem</h3>
-                            <p class="food-description">Tri jaja i najfiniji kačkavalj za dobar početak jutra.</p>
-                            <div class="food-footer">
-                                <span class="food-price">270 RSD</span> <br>
-                                <button class="call-button" onclick="handleClick()">Pozovite odmah</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="food-card" data-category="dorucak">
-						<div class="shine"></div>
-                        <img src="./images/logo_card.png" alt="jaja sunka" class="food-image">
-                        <div class="food-content">
-                            <h3 class="food-title">Kajgana sa šunkom</h3>
-                            <p class="food-description">Trostruko jaje i, nikada ne biste očekivali, šunka.<br>  Kreativno zar ne? </p>
-                            <div class="food-footer">
-                                <span class="food-price">290 RSD</span> <br>
-                                <button class="call-button" onclick="handleClick()">Pozovite odmah</button>
-                            </div>
-                        </div>
-                    </div>
-					
-					<div class="food-card" data-category="dorucak">
-						<div class="shine"></div>
-                        <img src="./images/przenica.jpg" alt="punjene przenice" class="food-image">
-                        <div class="food-content">
-                            <h3 class="food-title">Punjene prženice</h3>
-                            <p class="food-description"> Đoletove prženice punjene čedar sirom, pavlakom, pečenicom i kečapom. Možda Vam ih Đole nije spremao u detinjstvu, ali cenim da je pravo vreme da počne.</p>
-                            <div class="food-footer">
-                                <span class="food-price">350 RSD</span>
-                                <button class="call-button" onclick="handleClick()">Pozovite odmah</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="kebab" class="menu-category">
-                <h2 class="category-title">Na kilo</h2>
-                             
-				<div class="menu-grid">
-                    <div class="food-card" data-category="naKilo">
-						<div class="shine"></div>
-                        <div class="food-content">
-                            <h3 class="food-title">Ćevapi/pljeskavice</h3>
-                            <p class="food-description"></p>
-                            <div class="food-footer">
-                                <span class="food-price">1800 RSD</span>
-                                <button class="call-button" onclick="handleClick()">Pozovite odmah</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="food-card" data-category="naKilo">
-						<div class="shine"></div>
-                        <div class="food-content">
-                            <h3 class="food-title">Pileći file</h3>
-                            <p class="food-description"></p>
-                            <div class="food-footer">
-                                <span class="food-price">1300 RSD</span>
-                                <button class="call-button" onclick="handleClick()">Pozovite odmah</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="food-card" data-category="naKilo">
-						<div class="shine"></div>
-                        <div class="food-content">
-                            <h3 class="food-title">Pileći batak</h3>
-                            <p class="food-description"></p>
-                            <div class="food-footer">
-                                <span class="food-price">1800 RSD</span>
-                                <button class="call-button" onclick="handleClick()">Pozovite odmah</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="food-card" data-category="naKilo">
-						<div class="shine"></div>
-                        <div class="food-content">
-                            <h3 class="food-title">Roštiljska kobasica</h3>
-                            <p class="food-description"></p>
-                            <div class="food-footer">
-                                <span class="food-price">1800 RSD</span>
-                                <button class="call-button" onclick="handleClick()">Pozovite odmah</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="food-card" data-category="naKilo">
-						<div class="shine"></div>
-                        <div class="food-content">
-                            <h3 class="food-title">Svinjske šnicle</h3>
-                            <p class="food-description"></p>
-                            <div class="food-footer">
-                                <span class="food-price">1800 RSD</span>
-                                <button class="call-button" onclick="handleClick()">Pozovite odmah</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="food-card" data-category="naKilo">
-						<div class="shine"></div>
-                        <div class="food-content">
-                            <h3 class="food-title">Mešano meso 1</h3>
-                            <p class="food-description">Ćevapi, pileći file, pileći batak, roštiljska kobasica, svinjska šnicla</p>
-                            <div class="food-footer">
-                                <span class="food-price">1520 RSD</span>
-                                <button class="call-button" onclick="handleClick()">Pozovite odmah</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="food-card" data-category="naKilo">
-						<div class="shine"></div>
-                        <div class="food-content">
-                            <h3 class="food-title">Mešano meso 2</h3>
-                            <p class="food-description">400g ćevapa, pileći file ili pileći batak, roštiljska kobasica, svinjska šnicla</p>
-                            <div class="food-footer">
-                                <span class="food-price">1620 RSD</span>
-                                <button class="call-button" onclick="handleClick()">Pozovite odmah</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="food-card" data-category="naKilo">
-						<div class="shine"></div>
-                        <div class="food-content">
-                            <h3 class="food-title">Mešano meso 3</h3>
-                            <p class="food-description">400g ćevapa, pileći file, pileći batak, svinjska šnicla</p>
-                            <div class="food-footer">
-                                <span class="food-price">1520 RSD</span>
-                                <button class="call-button" onclick="handleClick()">Pozovite odmah</button>
-                            </div>
-                        </div>
-                    </div>
-                    
-                </div>
-            </div>
-
-			<div id="sides" class="menu-category">
-                <h2 class="category-title">Slatkiši</h2>
-                <div class="menu-grid">
-					<div class="food-card" data-category="slatkisi">
-						<div class="shine"></div>
-                        <img src="./images/palacinke.jpg" alt="palacinka" class="food-image">
-                        <div class="food-content">
-                            <h3 class="food-title">Palačinak x 2</h3>
-                            <p class="food-description">Jedan palačinak, dva palačinka? Ne, ne.. <br> Svakako, dobijate 2 puta po palačinak, nazovite to kako hoćete.</p>
-                            <div class="food-footer">
-                                <div>
-									<span class="food-price">Krem+plazma: 200 RSD</span> <br>
-									<span class="food-price">Nutela+plazma: 250 RSD</span>
-                                </div>
-                                <button class="call-button" onclick="handleClick()">Pozovite odmah</button>
-                            </div>
-                        </div>
-                    </div>
-				</div>
-            </div>
-
-            <div id="sides" class="menu-category">
-                <h2 class="category-title">Prilozi</h2>
-                <div class="menu-grid">
-				
-					<div class="food-card" data-category="sides">
-						<div class="shine"></div>
-                        <img src="./images/kajmak.jpg" alt="kajmak" class="food-image">
-                        <div class="food-content">
-                            <h3 class="food-title">Kajmak</h3>
-                            <p class="food-description">Nazvaćemo ovo prilogom, mada je zaista više potreba. <br>Topi se u ustima.</p>
-                            <div class="food-footer">
-                                <span class="food-price">100 RSD</span>
-                                <button class="call-button" onclick="handleClick()">Pozovite odmah</button>
-                            </div>
-                        </div>
-                    </div>
-				
-                    <div class="food-card" data-category="sides">
-						<div class="shine"></div>
-                        <img src="./images/pomfrit.jpg" alt="pomfrit" class="food-image">
-                        <div class="food-content">
-                            <h3 class="food-title">Pomfrit</h3>
-                            <p class="food-description"></p>
-                            <div class="food-footer">
-                                <div>
-									<span class="food-price">200g: 200 RSD</span> <br>
-									<span class="food-price">400g: 350 RSD</span> <br>
-                                </div>
-                                <button class="call-button" onclick="handleClick()">Pozovite odmah</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="food-card" data-category="sides">
-						<div class="shine"></div>
-                        <img src="./images/pekarski.jpg" alt="pekarski" class="food-image">
-                        <div class="food-content">
-                            <h3 class="food-title">Pekarski krompir</h3>
-                            <p class="food-description"></p>
-                            <div class="food-footer">
-                                <div>
-									<span class="food-price">200g: 250 RSD</span> <br>
-									<span class="food-price">400g: 400 RSD</span> <br>
-                                </div>
-                                <button class="call-button" onclick="handleClick()">Pozovite odmah</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="food-card" data-category="sides">
-						<div class="shine"></div>
-                        <img src="./images/online_burger_bun.jpg" alt="Leba" class="food-image">
-                        <div class="food-content">
-                            <h3 class="food-title">Hlebić</h3>
-                            <p class="food-description">E, ovo već nema nikakve veze sa kravama, ali je tu da upotpuni doživljaj. </p>
-                            <div class="food-footer">
-                                <span class="food-price">Priceless, nećete valjda hleb pored ovakvih specijaliteta?</span>
-                                <button class="call-button" onclick="handleClick()">Pozovite odmah</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-			
-			
-        </section>
-        <div id="map"></div>
     </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const categoryButtons = document.querySelectorAll('.category-btn');
-            const menuCategories = document.querySelectorAll('.menu-category');
-
-            function filterItems(category) {
-                menuCategories.forEach(menuCategory => {
-                    if (category === 'all') {
-                        menuCategory.classList.remove('hidden');
-                    } else if (!menuCategory.querySelector(`[data-category="${category}"]`)) {
-                        menuCategory.classList.add('hidden');
-                    } else {
-                        menuCategory.classList.remove('hidden');
-                    }
-                });
-            }
-
-            categoryButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    categoryButtons.forEach(btn => btn.classList.remove('active'));
-                    button.classList.add('active');
-                    const category = button.getAttribute('data-category');
-                    filterItems(category);
-                });
-            });
-            
-
-            filterItems('all');
-            const map = L.map('map').setView([44.011699327201484, 20.910778985057316], 15);
-
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            }).addTo(map);
-
-            L.marker([44.011699327201484, 20.910778985057316]).addTo(map)
-                .bindPopup('Druga Dimenzija,<br> Kneza Miloša 16,<br>Kragujevac, Srbija<br> (u blizini PKG-a)')
-                .openPopup();
-        });
-        
-    </script>
-	<script>
-        function handleClick() {
-            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-                window.location.href = "tel:++381652552390";
-            } else {
-                document.getElementById('overlay').style.display = 'block';
-                document.getElementById('popup').style.display = 'block';
-            }
-        }
-
-        function closePopup() {
-            document.getElementById('overlay').style.display = 'none';
-            document.getElementById('popup').style.display = 'none';
-        }
-    </script>
-
 </body>
 </html>
