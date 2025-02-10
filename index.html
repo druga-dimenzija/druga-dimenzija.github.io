@@ -3,6 +3,7 @@
 <head>
     <title>Druga dimenzija</title>
 	<link rel="icon" href="./images/logo_picture_tab.png" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body {
             margin: 0;
@@ -78,6 +79,32 @@
             font-size: 1rem;
             color: #bebebe;
             margin-top: 0.5rem;
+        }
+
+        /* Додавање респонзивног скалирања: уместо скока од 4 у реду до 4 у колони,
+           за уређаје са ширином до 600px форсирамо 2 колоне (2x2 распоред) */
+        @media (max-width: 600px) {
+            .icons-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+                max-width: 100%;
+            }
+            .logo {
+                width: 100px;
+                margin-bottom: 1.5rem;
+            }
+            .icon-container {
+                width: 60px;
+                height: 60px;
+                border-radius: 15px;
+            }
+            .icon {
+                width: 30px;
+                height: 30px;
+            }
+            .label {
+                font-size: 0.85rem;
+            }
         }
     </style>
 </head>
