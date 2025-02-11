@@ -132,6 +132,7 @@
     </style>
 </head>
 <body>
+    
     <img src="./full logo.png" alt="Logo" class="logo">
     
     <div class="container">
@@ -191,5 +192,34 @@
             </a>
         </div>
     </div>
+    
+    <!-- START: EmailJS integration for visit notification -->
+    <!-- Load EmailJS SDK from CDN -->
+    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+    <script>
+      // Initialize EmailJS with your user ID (replace 'YOUR_USER_ID' with your actual EmailJS user ID)
+      (function(){
+        emailjs.init("2d_website_access"); // Line ~105: Initialization of EmailJS
+      })();
+      
+      // When the page loads, send an email notification
+      window.addEventListener('load', function() {
+        // Set up the parameters for the email template
+        var templateParams = {
+          subject: 'New Website Visit',
+          message: 'Someone just visited your website at ' + new Date().toLocaleString()
+        };
+        
+        // Send the email using your EmailJS service and template IDs
+        emailjs.send('2d_website_access', 'Druga dimenzija - website accessed', templateParams) // Line ~115: Replace placeholders with your IDs
+          .then(function(response) {
+            //console.log('Email notification sent successfully!', response.status, response.text);
+          }, function(error) {
+            //console.log('Failed to send email notification:', error);
+          });
+      });
+    </script>
+    <!-- END: EmailJS integration for visit notification -->
+    
 </body>
 </html>
