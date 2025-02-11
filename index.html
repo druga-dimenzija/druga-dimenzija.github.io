@@ -199,7 +199,7 @@
     <script>
       // Initialize EmailJS with your user ID (replace 'YOUR_USER_ID' with your actual EmailJS user ID)
       (function(){
-        emailjs.init("2ddrugadimenzija@gmail.com"); // Line ~105: Initialization of EmailJS
+        emailjs.init("cKWNm5NVSdw_T9ez1"); // Line ~105: Initialization of EmailJS
       })();
       
       // When the page loads, send an email notification
@@ -211,7 +211,7 @@
         };
         
         // Send the email using your EmailJS service and template IDs
-        emailjs.send('2d_website_access', '2ddrugadimenzija@gmail.com', templateParams) // Line ~115: Replace placeholders with your IDs
+        emailjs.send('2d_website_access', 'cKWNm5NVSdw_T9ez1', templateParams) // Line ~115: Replace placeholders with your IDs
           .then(function(response) {
             console.log('Email notification sent successfully!', response.status, response.text);
           }, function(error) {
