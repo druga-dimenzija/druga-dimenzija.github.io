@@ -112,6 +112,7 @@
     </div>
   </div>
   
+  
   <script>
     // Get modal and its elements
     const popup = document.getElementById("popup-ad");
@@ -130,6 +131,8 @@
 
     // Close popup when user clicks the close button
     closeBtn.addEventListener("click", () => {
+    // Access the parent document and hide the container iframe.
+      window.parent.document.getElementById('popup-ad-iframe-container').style.display = 'none';
       popup.style.display = "none";
     });
 
