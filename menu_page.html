@@ -986,7 +986,7 @@
 	<script>
         function handleClick() {
             if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-                window.location.href = "tel:++381652552390";
+                window.location.href = "tel:+381652552390";
             } else {
                 document.getElementById('overlay').style.display = 'block';
                 document.getElementById('popup').style.display = 'block';
@@ -997,6 +997,19 @@
             document.getElementById('overlay').style.display = 'none';
             document.getElementById('popup').style.display = 'none';
         }
+    </script>
+
+
+    <!-- Add the fetch API code to import the popup ad -->
+    <div id="popup-ad-container"></div>
+    <script>
+        fetch('popup-ad.html')
+          .then(response => response.text())
+          .then(html => {
+            document.getElementById('popup-ad-container').innerHTML = html;
+            // If the imported popup requires initialization, you can call its functions here.
+          })
+          .catch(err => console.error('Failed to load popup ad:', err));
     </script>
 
 </body>

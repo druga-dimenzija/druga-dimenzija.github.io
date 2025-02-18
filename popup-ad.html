@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Popup Ad Example</title>
+  <style>
+    /* The modal container */
+    #popup-ad {
+      display: none; /* Hidden by default */
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+      justify-content: center;
+      align-items: center;
+    }
+    
+    /* Popup content box */
+    .popup-content {
+      background-color: #fff;
+      padding: 20px;
+      border: 2px solid #f1f1f1;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 500px;
+      text-align: center;
+      position: relative;
+    }
+    
+    /* Close button */
+    .close {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 28px;
+      font-weight: bold;
+      color: #aaa;
+      cursor: pointer;
+    }
+    
+    /* Placeholder image styles */
+    .popup-image img {
+      width: 100%;
+      height: auto;
+      border-radius: 4px;
+    }
+    
+    /* Product name style */
+    .product-name {
+      font-size: 24px;
+      margin: 10px 0;
+      color: #d32f2f; /* Red accent */
+    }
+    
+    /* Product description style */
+    .product-description {
+      font-size: 16px;
+      margin: 10px 0;
+      color: #555;
+    }
+    
+    /* Call the Shop button style */
+    .call-shop {
+      background-color: #fbc02d; /* Yellow */
+      color: #fff;
+      border: none;
+      padding: 15px 25px;
+      font-size: 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+    
+    /* Responsive adjustments for smaller screens */
+    @media (max-width: 600px) {
+      .popup-content {
+        padding: 15px;
+      }
+      .product-name {
+        font-size: 20px;
+      }
+      .product-description {
+        font-size: 14px;
+      }
+      .call-shop {
+        font-size: 14px;
+        padding: 10px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  
+  <!-- Popup Modal -->
+  <div id="popup-ad">
+    <div class="popup-content">
+      <span class="close">&times;</span>
+      <div class="popup-image">
+        <!-- Replace with your product image URL -->
+        <img src="./images/leteca_kofica/piletina pohovana.jpg" alt="Leteća kofica">
+      </div>
+      <h2 class="product-name">Leteća kofica!</h2>
+      <p class="product-description">
+        Isprobajte našu spešl edišn leteću koficu koja se sastoji od 250g pilećeg belog mesa (380g sa pohom) ušuškanog u 200g  hrskavog pomfrita.
+      </p>
+      <button class="call-shop">Pozovite odmah!</button>
+    </div>
+  </div>
+  
+  <script>
+    // Get modal and its elements
+    const popup = document.getElementById("popup-ad");
+    const closeBtn = document.querySelector(".close");
+    const callShopButton = document.querySelector(".call-shop");
+
+    // Function to display the popup (triggered after a delay)
+    function showPopup() {
+      popup.style.display = "flex"; // using flex to center content
+    }
+
+    // Show popup on page load after 2 seconds
+    window.addEventListener("load", () => {
+      setTimeout(showPopup, 1000);
+    });
+
+    // Close popup when user clicks the close button
+    closeBtn.addEventListener("click", () => {
+      popup.style.display = "none";
+    });
+
+    // Close popup when clicking outside the popup content
+    window.addEventListener("click", (event) => {
+      if (event.target === popup) {
+        popup.style.display = "none";
+      }
+    });
+
+    // Instead of handling the call directly, we call the handler imported from menu_page.html
+    callShopButton.addEventListener("click", () => {
+      if (typeof handleClick === 'function') {
+        handleClick(); // This function is defined in your menu_page.html
+      } else {
+        console.error("Call handler (handleClick) is not available.");
+      }
+    });
+  </script>
+</body>
+</html>
