@@ -566,9 +566,9 @@
                         
                         <div class="food-content">
                             <h3 class="food-title">Leteća kofica</h3>
-                            <p class="food-description">Uživajte u vrhunskoj piletini mase 250gr (380g sa pohom) ušuškanoj u 200g hrskavog i neodoljivog pomfrita. <br> Ne brinite se, ne leti stvarno.😉</p>
+                            <p class="food-description">Uživajte u vrhunskoj piletini mase 250g (380g sa pohom), ušuškanoj u 200g hrskavog i neodoljivog pomfrita. <br> Ne brinite se, ne leti stvarno.😉</p>
                             <div class="food-footer">
-                                <span class="food-price">250g +200g pomfrita:<br>600 RSD</span>
+                                <span class="food-price">250g+200g pomfrita:<br>600 RSD</span>
                                 <button class="call-button" onclick="handleClick()">Pozovite odmah</button>
                             </div>
                         </div>
@@ -1014,18 +1014,34 @@
     </script>
 
     <!-- Popup Iframe Container -->
-    <div id="popup-ad-iframe-container" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
-        <iframe src="popup-ad.html" style="width: 90%; max-width: 500px; height: auto; border: none; background: #fff; border-radius: 8px;"></iframe>
+    <div id="popup-ad-iframe-container" 
+        style="display: none; 
+                position: fixed; 
+                top: 0; left: 0; 
+                width: 100%; height: 100%; 
+                background-color: rgba(0,0,0,0.5); 
+                z-index: 1000; 
+                justify-content: center; 
+                align-items: center;">
+    <iframe src="popup-ad.html" 
+            style="width: 90%; 
+                    max-width: 500px; 
+                    height: 80vh;          /* Fixed height to display full content */
+                    border: none; 
+                    background: transparent; 
+                    border-radius: 8px;" 
+            scrolling="no">
+    </iframe>
     </div>
-    <script>
-        window.addEventListener('load', () => {
-          setTimeout(() => {
-            document.getElementById('popup-ad-iframe-container').style.display = 'flex';
-          }, 1000); // shows after 1 second
-        });
-    </script>
-      
 
+    <script>
+    // Show the popup container after 1.5 seconds
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+        document.getElementById('popup-ad-iframe-container').style.display = 'flex';
+        }, 1500);
+    });
+    </script>
 
 </body>
 </html>
